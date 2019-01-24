@@ -71,7 +71,8 @@ class LineParser:
             return self._no_declaration()
         elif len(segments) > 2:
             raise ParsingError("Line %s contains too many '%s'. \n %s " % (str(line_index), DECLARATION, self.line))
-            # parse the left hand side of the expression
+
+        # parse the left hand side of the expression
         left = segments[0]
         left = self._strip_outer_spaces(left)
         left = self._strip_ignore(left)
@@ -121,9 +122,10 @@ class LineParser:
         if self._is_empty(self.line):
             self.dict = {}
             return self.dict
-        # If it is not an empty line, raise parsing error  
         else:
-            raise ParsingError("Line %s does not contain '%s'. \n %s " % (str(self.line_index), DECLARATION, self.line))
+            # If it is not an empty line, raise parsing error
+            #raise ParsingError("Line %s does not contain '%s'. \n %s " % (str(self.line_index), DECLARATION, self.line))
+            return {}
 
     def _is_empty(self, s):
         """
@@ -281,9 +283,12 @@ class LineParser:
         Returns: 
             outlist: list of integers or float, depending on the content of the 'Interfile list'.
         """
-        # delete bracers
-        table = str.maketrans(dict.fromkeys("{},"))
-        s = s.translate(table)
+        # delete bracers if python3
+        #table = str.maketrans(dict.fromkeys("{},"))
+        #s = s.translate(table)
+
+        # delete bracers if python2
+        s = s.translate(None, "{},")
 
         outlist = []
         for x in s.split():
